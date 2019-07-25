@@ -30,6 +30,8 @@ if(!empty($_POST)) {
     $ds2 = array_column(array_filter($data2, function ($v) use($k2){
         return !empty($v[$k2]);
     }),  $k2);
+    $ds1 = array_unique($ds1);
+    $ds2 = array_unique($ds2);
 
     if (count($ds2) > count($ds1)) {
         $t = $ds1;
@@ -47,7 +49,8 @@ if(!empty($_POST)) {
     $sh = new Spreadsheet();
     $sh->createSheet();
     $sh->setActiveSheetIndex(0);
-    $sh->getActiveSheet()->setCellValue('A1', '不同的');
+    $title = $action == 1 ? '不同的' : '相同的';
+    $sh->getActiveSheet()->setCellValue('A1', $title);
     for ($i = 0;$i< (count($result)); $i++) {
         //$sh->setActiveSheetIndex($i);
         $n = ord('A');
@@ -60,7 +63,7 @@ if(!empty($_POST)) {
         }
     }
 
-        $filename = '不同的.xlsx';
+        $filename = $title.'.xlsx';
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($sh, 'Xlsx');
         $writer->setIncludeCharts(true);
         header("Content-Type: application/force-download");
@@ -124,8 +127,12 @@ if(!empty($_POST)) {
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">对比方式</label>
-                            <input type="radio" class="form-control" name="action" value="1">对比不同
-                            <input type="radio" class="form-control" name="action" value="2">对比相同
+                            <label class="radio-inline">
+                                <input type="radio" name="action" value="1">对比不同
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="action" value="2">对比相同
+                            </label>
                         </div>
                         <button type="submit" class="btn btn-default">确定</button>
                     </form>
