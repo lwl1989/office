@@ -36,7 +36,12 @@ if(!empty($_POST)) {
         $ds1 = $ds2;
         $ds2 = $t;
     }
-    $result = array_diff($ds1, $ds2);
+    $action = $_POST['action'] ?: 1;
+    if($action == 1) {
+        $result = array_diff($ds1, $ds2);
+    }else{
+        $result = array_intersect($ds1, $ds2);
+    }
     $result = array_values($result);
 
     $sh = new Spreadsheet();
@@ -117,7 +122,11 @@ if(!empty($_POST)) {
                             <label for="exampleInputPassword1">列名2</label>
                             <input type="text" class="form-control" name="key2" placeholder="第二个excel列">
                         </div>
-
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">对比方式</label>
+                            <input type="radio" class="form-control" name="action" value="1">对比不同
+                            <input type="radio" class="form-control" name="action" value="2">对比相同
+                        </div>
                         <button type="submit" class="btn btn-default">确定</button>
                     </form>
                 </div>
