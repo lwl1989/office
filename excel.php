@@ -6,6 +6,9 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 error_reporting(E_ALL);
 
+function toString($v) : string {
+    return trim($v.' ');
+}
 
 if(!empty($_POST)) {
 
@@ -25,11 +28,28 @@ if(!empty($_POST)) {
     $data2 = $excel2->getActiveSheet()->toArray(null, true, true, true);
 
     $ds1 = array_column(array_filter($data1, function ($v) use($k1){
-        return !empty($v[$k1]);
+        if(is_null($v[$k1])) {
+            return false;
+        }
+        if(empty($v[$k1])) {
+            return false;
+        }
+        if(is_string($v[$k1])) {
+            $v[$k1] = trim($v[$k1]);
+        }
+        return true;
     }), $k1);
     $ds2 = array_column(array_filter($data2, function ($v) use($k2){
-        return !empty($v[$k2]);
+        if(is_null($v[$k2])) {
+            return false;
+        }
+        if(empty($v[$k2])) {
+            return false;
+        }
+        return true;
     }),  $k2);
+    $ds1 = array_map('toString', $ds1);
+    $ds2 = array_map('toString', $ds2);
     $ds1 = array_unique($ds1);
     $ds2 = array_unique($ds2);
 
@@ -44,23 +64,30 @@ if(!empty($_POST)) {
     }else{
         $result = array_intersect($ds1, $ds2);
     }
+    if(is_null($result)) {
+        $result = [];
+    }
     $result = array_values($result);
 
     $sh = new Spreadsheet();
     $sh->createSheet();
     $sh->setActiveSheetIndex(0);
     $title = $action == 1 ? '不同的' : '相同的';
-    $sh->getActiveSheet()->setCellValue('A1', $title);
+    $sh->getActiveSheet();
+    $ch = $sh->getActiveSheet();
+    $ch->setCellValue('A1', $title);
     for ($i = 0;$i< (count($result)); $i++) {
-        //$sh->setActiveSheetIndex($i);
-        $n = ord('A');
 
-        $ch = $sh->getActiveSheet();
-        $k = 0;
-        for($j = $n; $j < ($n+count($result[$i])); $j++) {
-            $ch->setCellValue(chr($j). ($i + 2), $result[$i]);
-            $k++;
-        }
+        $ch->setCellValue('A'. ($i + 2), $result[$i]);
+        //$sh->setActiveSheetIndex($i);
+//        $n = ord('A');
+//
+//        $ch = $sh->getActiveSheet();
+//        $k = 0;
+//        for($j = $n; $j < ($n+count($result[$i])); $j++) {
+//            $ch->setCellValue(chr($j). ($i + 2), $result[$i]);
+//            $k++;
+//        }
     }
 
         $filename = $title.'.xlsx';
