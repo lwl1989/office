@@ -33,11 +33,11 @@ function base64EncodeImage ($image_file) {
     $base64_image = 'data:' . $image_info['mime'] . ';base64,' . chunk_split(base64_encode($image_data));
     return $base64_image;
 }
-var_dump($_SERVER['DOCUMENT_ROOT'].'/..'.$_SERVER['REQUEST_URI'].'.jpeg');exit();
+
 if(isset($_COOKIE['love'])) {
     $image = $_SERVER['DOCUMENT_ROOT'].'/..'.$_SERVER['REQUEST_URI'];
     $love = $_COOKIE['love'];
-
+    var_dump($_SERVER['DOCUMENT_ROOT'].'/..'.$_SERVER['REQUEST_URI'].'.jpeg');exit();
     $aes = new Aes();
     $result = $aes->aesDe($love);
     if($result and strpos($result,'920922') !== false) {
@@ -53,8 +53,14 @@ if(isset($_COOKIE['love'])) {
             $aes = new Aes();
             $value = $aes->aesDe('920922'.time());
             setcookie('love', $value, time()+3600);
+            header('location: /love.html');
+            exit();
         }
-    }else{
-        header('HTTP/1.1 404 Not Found');
     }
+    echo '不是真爱哟，检测失败，即将跳转回去';
+    echo '<script>
+        setTimeout(function() {
+                  location.href = "check.html"
+        }, 2000);
+        </script>';
 }
