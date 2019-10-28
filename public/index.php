@@ -39,7 +39,15 @@ function getImageContent($image_file) {
 }
 
 if(isset($_COOKIE['love'])) {
-    $image = $_SERVER['DOCUMENT_ROOT'].'/..'.$_SERVER['REQUEST_URI'];
+    if(strpos($_SERVER['REQUEST_URI'], 'images' )===false) {
+        echo '页面不存在，即将跳转到真爱页';
+        echo '<script>
+        setTimeout(function() {
+                  location.href = "love.html"
+        }, 2000);
+        </script>';
+    }
+    $image = $_SERVER['DOCUMENT_ROOT'].'/..'.$_SERVER['REQUEST_URI'].'.jpeg';
     $love = $_COOKIE['love'];
     $aes = new Aes();
     $result = $aes->aesDe($love);
