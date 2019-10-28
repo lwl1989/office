@@ -53,6 +53,16 @@ if(isset($_COOKIE['love'])) {
     $result = $aes->aesDe($love);
     if($result and strpos($result,'920922') !== false) {
         if(file_exists($image)) {
+
+            $c_time = strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE'])+3600*24;
+            // 当大于当前时间时, 表示还在缓存中... 释放304
+            if($c_time > time()){
+                header('HTTP/1.1 304 Not Modified');
+                exit();
+            }
+            header('Cache-Control: max-age=2592000');
+            header("Expires: " . gmdate("D, d M Y H:i:s",time()+3600*24)." GMT");
+            header("Last-Modified: " . gmdate("D, d M Y H:i:s", filemtime($image)) . " GMT");
             header('Content-type: image/jpeg');
             echo getImageContent($image);
             exit();
