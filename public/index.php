@@ -52,7 +52,7 @@ if(isset($_COOKIE['love'])) {
         if($_POST['birthday'] == '920922') {
             $aes = new Aes();
             $value = $aes->aesDe('920922'.time());
-            setcookie('love', $value, time()+3600);
+            setcookie('love', $value, time()+3600*24,'/');
             header('location: /love.html');
             exit();
         }
