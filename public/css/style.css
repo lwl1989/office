@@ -100,7 +100,7 @@ body{
 .wrapper .content .item:nth-of-type(2) .inner .bjPic{
     background-image: url("../images/2.jpeg");
     background-size: cover;
-    background-position: center;
+    background-position: 30% 50%;
 }
 .wrapper .content .item:nth-of-type(3) .inner .bjPic{
     background-image: url("../images/3.jpeg");
@@ -110,7 +110,7 @@ body{
 .wrapper .content .item:nth-of-type(4) .inner .bjPic{
     background-image: url("../images/4.jpeg");
     background-size: cover;
-    background-position: center;
+    background-position:  70% 50%;
 }
 .wrapper .content .item:nth-of-type(5) .inner .bjPic{
     background-image: url("../images/5.jpeg");
@@ -192,11 +192,13 @@ body{
     transition: width 0.5s ease-in 0.5s, height 0.5s ease-in;
 }
 .startShowItem .content .item.active{
-    width: 100%;
+    margin-left: 30%;
+    margin-right: 30%;
+    width: 70%;
 }
 .startShowItem .content .item:not(.active){
-    height: 0%;
-    width: 0%;
+    height: 0;
+    width: 0;
     /* transition: height 0.5s ease-in; */
 }
 .startShowItem .content .item .inner .dir{
