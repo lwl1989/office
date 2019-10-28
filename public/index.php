@@ -29,20 +29,24 @@ class Aes
 
 function base64EncodeImage ($image_file) {
     $image_info = getimagesize($image_file);
-    $image_data = fread(fopen($image_file, 'r'), filesize($image_file));
+    $image_data = getImageContent($image_file);
     $base64_image = 'data:' . $image_info['mime'] . ';base64,' . chunk_split(base64_encode($image_data));
     return $base64_image;
+}
+
+function getImageContent($image_file) {
+    return fread(fopen($image_file, 'r'), filesize($image_file));
 }
 
 if(isset($_COOKIE['love'])) {
     $image = $_SERVER['DOCUMENT_ROOT'].'/..'.$_SERVER['REQUEST_URI'];
     $love = $_COOKIE['love'];
-    var_dump($_SERVER['DOCUMENT_ROOT'].'/..'.$_SERVER['REQUEST_URI'].'.jpeg');exit();
     $aes = new Aes();
     $result = $aes->aesDe($love);
     if($result and strpos($result,'920922') !== false) {
         if(file_exists($image)) {
-            echo base64EncodeImage($image);
+            header('Content-type: image/jpeg');
+            echo getImageContent($image);
             exit();
         }
         header('HTTP/1.1 404 Not Found');
@@ -51,10 +55,9 @@ if(isset($_COOKIE['love'])) {
     if(isset($_POST['birthday'])) {
         if($_POST['birthday'] == '920922') {
             $aes = new Aes();
-            $value = $aes->aesDe('920922'.time());
-            $result = setcookie('love', $value, time()+3600*24,'/','iwenjuan.com.cn',true,trues);
-            var_dump($result);
-            exit();header('location: /love.html');
+            $value = $aes->aesEn(   '920922'.time());
+            $result = setcookie('love', $value,  time()+60*60*24*30,'/','iwenjuan.com.cn',true,trues);
+            header('location: /love.html');
             exit();
         }
     }
