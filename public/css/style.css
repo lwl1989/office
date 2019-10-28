@@ -93,42 +93,42 @@ body{
 
 
 .wrapper .content .item:nth-of-type(1) .inner .bjPic{
-    background-image: url("../images/1.jpeg");
+    background-image: url("../images/1");
     background-size: cover;
     background-position: center;
 }
 .wrapper .content .item:nth-of-type(2) .inner .bjPic{
-    background-image: url("../images/2.jpeg");
+    background-image: url("../images/2");
     background-size: cover;
     background-position: 30% 50%;
 }
 .wrapper .content .item:nth-of-type(3) .inner .bjPic{
-    background-image: url("../images/3.jpeg");
+    background-image: url("../images/3");
     background-size: cover;
     background-position: center;
 }
 .wrapper .content .item:nth-of-type(4) .inner .bjPic{
-    background-image: url("../images/4.jpeg");
+    background-image: url("../images/4");
     background-size: cover;
     background-position:  70% 50%;
 }
 .wrapper .content .item:nth-of-type(5) .inner .bjPic{
-    background-image: url("../images/5.jpeg");
+    background-image: url("../images/5");
     background-size: cover;
     background-position: center;
 }
 .wrapper .content .item:nth-of-type(6) .inner .bjPic{
-    background-image: url("../images/6.jpeg");
+    background-image: url("../images/6");
     background-size: cover;
     background-position: center;
 }
 .wrapper .content .item:nth-of-type(7) .inner .bjPic{
-    background-image: url("../images/7.jpeg");
+    background-image: url("../images/7");
     background-size: cover;
     background-position: center;
 }
 .wrapper .content .item:nth-of-type(8) .inner .bjPic{
-    background-image: url("../images/8.jpeg");
+    background-image: url("../images/8");
     background-size: cover;
     background-position: center;
 }

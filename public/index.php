@@ -33,6 +33,7 @@ function base64EncodeImage ($image_file) {
     $base64_image = 'data:' . $image_info['mime'] . ';base64,' . chunk_split(base64_encode($image_data));
     return $base64_image;
 }
+var_dump($_SERVER['DOCUMENT_ROOT'].'/..'.$_SERVER['REQUEST_URI'].'.jpeg');exit();
 if(isset($_COOKIE['love'])) {
     $image = $_SERVER['DOCUMENT_ROOT'].'/..'.$_SERVER['REQUEST_URI'];
     $love = $_COOKIE['love'];
