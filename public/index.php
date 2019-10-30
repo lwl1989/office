@@ -51,7 +51,7 @@ if(isset($_COOKIE['love'])) {
     $love = $_COOKIE['love'];
     $aes = new Aes();
     $result = $aes->aesDe($love);
-    if($result and strpos($result,'920922') !== false) {
+    if($result and strpos($result,'920920') !== false) {
         if(file_exists($image)) {
 
             $c_time = strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE'])+3600*24;
@@ -71,9 +71,9 @@ if(isset($_COOKIE['love'])) {
     }
 }else{
     if(isset($_POST['birthday'])) {
-        if($_POST['birthday'] == '920922') {
+        if($_POST['birthday'] == '920920') {
             $aes = new Aes();
-            $value = $aes->aesEn(   '920922'.time());
+            $value = $aes->aesEn(   '920920'.time());
             $result = setcookie('love', $value,  time()+60*60*24*30,'/','iwenjuan.com.cn',true,trues);
             header('location: /love.html');
             exit();

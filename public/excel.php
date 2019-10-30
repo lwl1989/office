@@ -73,7 +73,6 @@ if(!empty($_POST)) {
     $sh->createSheet();
     $sh->setActiveSheetIndex(0);
     $title = $action == 1 ? '不同的' : '相同的';
-    $sh->getActiveSheet();
     $ch = $sh->getActiveSheet();
     $ch->setCellValue('A1', $title);
     for ($i = 0;$i< (count($result)); $i++) {
@@ -92,7 +91,7 @@ if(!empty($_POST)) {
         header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Pragma: no-cache");
-        $writer->save( "php://output" );
+        $writer->save( "php://output");
 }else{
     echo '无效处理，即将自动跳转';
     echo '<script>
