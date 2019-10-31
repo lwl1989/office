@@ -74,7 +74,7 @@ if(isset($_COOKIE['love'])) {
         if($_POST['birthday'] == '20190909') {
             $aes = new Aes();
             $value = $aes->aesEn(   '20190909'.time());
-            $result = setcookie('love', $value,  time()+60*60*24*30,'/','iwenjuan.com.cn',true,trues);
+            $result = setcookie('love', $value,  time()+60*60*24*30,'/','iwenjuan.com.cn',true,true);
             header('location: /love.html');
             exit();
         }
