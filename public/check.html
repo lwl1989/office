@@ -2,12 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>检测爱心</title>
+    <link rel="stylesheet" href="css/style1.css">
 </head>
+
 <body>
-<form action="index.php" method="post">
-    <input name="birthday" placeholder="不知道密码吧，你猜！💕">
-    <button value="提交" type="submit">提交</button>
-</form>
+    <div style="width: 700px;height: 100%;     background:#000; margin: 0 auto;">
+        <div class="heart"> <!--     //#position:absolute;  #perspective:800px; -->
+            <div class="cube">
+                <div>
+                    <img src="5.jpeg" width="100" height="100" alt="">
+                </div>
+                <div>
+                    <img src="5.jpeg" width="100" height="100" alt="">
+                </div>
+                <div>
+                    <img src="5.jpeg" width="100" height="100" alt="">
+                </div>
+                <div>
+                    <img src="5.jpeg" width="100" height="100" alt="">
+                </div>
+                <div>
+                    <img src="5.jpeg" width="100" height="100" alt="">
+                </div>
+                <div>
+                    <img src="5.jpeg" width="100" height="100" alt="">
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 100px;padding-bottom: 20px;">
+            <form action="index.php" method="post">
+                <input name="birthday" placeholder="不知道密码吧，你猜！💕">
+                <button value="提交" type="submit">提交</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let heart = document.getElementsByClassName("heart")[0];
+            for (let i = 0; i < 36; i++) {
+                let oDiv = document.createElement("div");
+                oDiv.className = "rib";
+                // 画36条心形曲线
+                oDiv.style.transform = "rotateY(" + 10 * i + "deg) rotateZ(45deg) translateX(30px)";
+                let n = 0;
+                setInterval(function () {
+                    if (n < 36) {
+                        document.getElementsByClassName('rib')[n].style.borderColor = getRandomColor();
+                        n = n + 1;
+                    } else {
+                        n = 0;
+                    }
+                }, 1000);
+                heart.appendChild(oDiv);
+            }
+
+            // 随机色
+            let getRandomColor = function () {
+                return '#' +
+                    (function (color) {
+                        return (color += '0123456789abcdef'[Math.floor(Math.random() * 16)])
+                        && (color.length === 6) ? color : arguments.callee(color);
+                    })('');
+            }
+        });
+    </script>
 </body>
 </html>

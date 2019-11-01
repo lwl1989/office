@@ -3,20 +3,19 @@
     padding:0;
 }
 body{
-    background:#000;
     overflow:hidden;
 }
 .heart{
-    position:absolute;
-    left:0;
+
+    left:30%;
     right:0;
-    top:0;
+    top:50px;
     bottom:0;
     width:200px;
     height:260px;
     margin: auto;
     transform-style:preserve-3d;
-    perspective:800px;
+
     animation:rot 15s linear infinite;
 }
 @keyframes rot{
