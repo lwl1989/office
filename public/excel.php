@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 
 function toString($v): string
 {
-    if(strpos($v, '106') === 0) {
+    if (strpos($v, '106') === 0) {
         $v = '1' . substr($v, 3);
     }
     return trim($v . ' ');
@@ -55,42 +55,43 @@ if (!empty($_POST)) {
     });
 
     $data1 = array_map(function ($v) use ($k1) {
-        $v[chr(ord('A')+count($v))] = $v[$k1];
+        $v[chr(ord('A') + count($v))] = $v[$k1];
         $v[$k1] = toString($v[$k1]);
         return $v;
     }, $data1);
     $data2 = array_map(function ($v) use ($k2) {
-        $v[chr(ord('A')+count($v))] = $v[$k2];
+        $v[chr(ord('A') + count($v))] = $v[$k2];
         $v[$k2] = toString($v[$k2]);
         return $v;
     }, $data2);
 
     $action = $_POST['action'] ?? 1;
-//    if ($action == 1) {
-//        $result = array_diff($ds1, $ds2);
-//    } else {
-//        $result = array_intersect($ds1, $ds2);
-//    }
+    //    if ($action == 1) {
+    //        $result = array_diff($ds1, $ds2);
+    //    } else {
+    //        $result = array_intersect($ds1, $ds2);
+    //    }
     $data2 = array_column($data2, null, $k2);
     $result = [];
     foreach ($data1 as $index => $d1) {
         $exists = false;
-//        foreach ($data2 as $index2 => $d2) {
-//            if($d1[$k1] == $d2[$k2]) {
-//                $exists = true;
-//                break;
-//            }
-//        }
-        if(array_key_exists($d1[$k1], $data2)) {
+        //        foreach ($data2 as $index2 => $d2) {
+        //            if($d1[$k1] == $d2[$k2]) {
+        //                $exists = true;
+        //                break;
+        //            }
+        //        }
+
+        if (array_key_exists($d1[$k1], $data2)) {
             $exists = true;
         }
         if ($action == 1) {
             if (!$exists) {
-               $result[] = $d1;
+                $result[] = [$d1];
             }
         } else {
             if ($exists) {
-                $result[] = $d1;
+                $result[] = [$d1, $data2[$d1[$k1]]];
             }
         }
     }
@@ -100,23 +101,29 @@ if (!empty($_POST)) {
         case 1: //只返回结果
             $t = [];
             foreach ($result as $value) {
-                $t[] = $value[$k1];
+                $t[] = $value[0][$k1];
             }
             $result = $t;
             break;
         case 2: //附带表信息
+            $t = [];
+            foreach ($result as $value) {
+                $t[] = $value[0];
+            }
+            $result = $t;
             break;
         case 3: //附带表具体某一列信息
             $t = [];
-            $attachKey = $_POST['attach_key'] ?? '';
+            $attachKey1 = $_POST['attach_key1'] ?? '';
+            $attachKey2 = $_POST['attach_key2'] ?? '';
             foreach ($result as $value) {
-                if($attachKey == '') {
-                    $t = $result;
-                    break;
-                }else{
+                if ($attachKey1 == '') {
+                    $t[] = $value[0];
+                } else {
                     $t[] = [
-                        'A' => $value[$k1],
-                        'B' => $value[$attachKey]
+                        'A' => $value[0][$k1],
+                        'B' => $value[0][$attachKey1],
+                        'C' => $value[1][$attachKey2]
                     ];
                 }
             }
@@ -130,74 +137,74 @@ if (!empty($_POST)) {
     $sh->setActiveSheetIndex(0);
     $title = $action == 1 ? '不同的' : '相同的';
     $ch = $sh->getActiveSheet();
-//    $ch->setCellValue('A1', $title);
+    //    $ch->setCellValue('A1', $title);
     for ($i = 0; $i < (count($result)); $i++) {
-        if(is_array($result[$i])) {
+        if (is_array($result[$i])) {
             $start = 'A';
             foreach ($result[$i] as $value) {
                 //var_dump($start . ($i + 2));
                 $ch->setCellValue($start . ($i + 2), $value);
                 $start = chr(ord($start) + 1);
             }
-        }else{
+        } else {
             $ch->setCellValue('A' . ($i + 2), $result[$i]);
         }
     }
-//    var_dump($result);
-//    exit();
-//    $ds1 = array_column(array_filter($data1, function ($v) use ($k1) {
-//        if (is_null($v[$k1])) {
-//            return false;
-//        }
-//        if (empty($v[$k1])) {
-//            return false;
-//        }
-//        if (is_string($v[$k1])) {
-//            $v[$k1] = trim($v[$k1]);
-//        }
-//        return true;
-//    }), $k1);
-//    $ds2 = array_column(array_filter($data2, function ($v) use ($k2) {
-//        if (is_null($v[$k2])) {
-//            return false;
-//        }
-//        if (empty($v[$k2])) {
-//            return false;
-//        }
-//        return true;
-//    }), $k2);
-//
-//    $ds1 = array_map('toString', $ds1);
-//    $ds2 = array_map('toString', $ds2);
-//    $ds1 = array_unique($ds1);
-//    $ds2 = array_unique($ds2);
-//
-//    if (count($ds2) > count($ds1)) {
-//        $t = $ds1;
-//        $ds1 = $ds2;
-//        $ds2 = $t;
-//    }
-//    $action = $_POST['action'] ?: 1;
-//    if ($action == 1) {
-//        $result = array_diff($ds1, $ds2);
-//    } else {
-//        $result = array_intersect($ds1, $ds2);
-//    }
-//    if (is_null($result)) {
-//        $result = [];
-//    }
-//    $result = array_values($result);
+    //    var_dump($result);
+    //    exit();
+    //    $ds1 = array_column(array_filter($data1, function ($v) use ($k1) {
+    //        if (is_null($v[$k1])) {
+    //            return false;
+    //        }
+    //        if (empty($v[$k1])) {
+    //            return false;
+    //        }
+    //        if (is_string($v[$k1])) {
+    //            $v[$k1] = trim($v[$k1]);
+    //        }
+    //        return true;
+    //    }), $k1);
+    //    $ds2 = array_column(array_filter($data2, function ($v) use ($k2) {
+    //        if (is_null($v[$k2])) {
+    //            return false;
+    //        }
+    //        if (empty($v[$k2])) {
+    //            return false;
+    //        }
+    //        return true;
+    //    }), $k2);
+    //
+    //    $ds1 = array_map('toString', $ds1);
+    //    $ds2 = array_map('toString', $ds2);
+    //    $ds1 = array_unique($ds1);
+    //    $ds2 = array_unique($ds2);
+    //
+    //    if (count($ds2) > count($ds1)) {
+    //        $t = $ds1;
+    //        $ds1 = $ds2;
+    //        $ds2 = $t;
+    //    }
+    //    $action = $_POST['action'] ?: 1;
+    //    if ($action == 1) {
+    //        $result = array_diff($ds1, $ds2);
+    //    } else {
+    //        $result = array_intersect($ds1, $ds2);
+    //    }
+    //    if (is_null($result)) {
+    //        $result = [];
+    //    }
+    //    $result = array_values($result);
 
-//    $sh = new Spreadsheet();
-//    $sh->createSheet();
-//    $sh->setActiveSheetIndex(0);
-//    $title = $action == 1 ? '不同的' : '相同的';
-//    $ch = $sh->getActiveSheet();
-//    $ch->setCellValue('A1', $title);
-//    for ($i = 0; $i < (count($result)); $i++) {
-//
-//        $ch->setCellValue('A' . ($i + 2), $result[$i]);
-//    }
+    //    $sh = new Spreadsheet();
+    //    $sh->createSheet();
+    //    $sh->setActiveSheetIndex(0);
+    //    $title = $action == 1 ? '不同的' : '相同的';
+    //    $ch = $sh->getActiveSheet();
+    //    $ch->setCellValue('A1', $title);
+    //    for ($i = 0; $i < (count($result)); $i++) {
+    //
+    //        $ch->setCellValue('A' . ($i + 2), $result[$i]);
+    //    }
 
     $filename = $title . '.xlsx';
     $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($sh, 'Xlsx');

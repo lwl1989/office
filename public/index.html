@@ -127,11 +127,19 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">附带指定列名</label>
+                        <div class="form-group" id="ak1">
+                            <label class="col-sm-2 control-label">附带指定表1列名</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" name="attach_key"
-                                       placeholder="只有当上面选定为附带指定列才会生效" id="attach_key">
+                                <input type="text" class="form-control" name="attach_key1"
+                                       placeholder="只有当上面选定为附带指定列才会生效" id="attach_key1">
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="ak2">
+                            <label class="col-sm-2 control-label">附带指定表2列名</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" name="attach_key2"
+                                       placeholder="只有当上面选定为,且比较相同时附带指定列才会生效" id="attach_key2">
                             </div>
                         </div>
 
@@ -146,5 +154,21 @@
 <div class="footer">
     <p style="text-align: center">技术支持：李蠢蠢</p>
 </div>
+<script>
+    $(document).ready(function(){
+        $("#ak1").hide();
+        $("#ak2").hide();
+        $("input:radio[name='attach']").click(function(){
+            let checkValue = $("input:radio[name='attach']:checked").val();
+            if (checkValue == "3") {
+                $("#ak1").show();
+                $("#ak2").show();
+            }else{
+                $("#ak1").hide();
+                $("#ak2").hide();
+            }
+        });
+    });
+</script>
 </body>
 </html>
