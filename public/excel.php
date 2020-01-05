@@ -9,9 +9,9 @@ error_reporting(E_ALL);
 
 function toString($v): string
 {
-    if (strpos($v, '106') === 0) {
-        $v = '1' . substr($v, 3);
-    }
+//    if (strpos($v, '106') === 0) {
+//        $v = '1' . substr($v, 3);
+//    }
     return trim($v . ' ');
 }
 
