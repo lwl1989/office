@@ -15,6 +15,12 @@ function toString($v): string
     return trim($v . ' ');
 }
 
+//$_FILES = [
+//    'excel1' => [
+//        'tmp_name'=>'/Volumes/content/www/office/public/sim1.xlsx',
+//        'name'=>'sim.xlsx'
+//    ]
+//];
 if (!empty($_FILES)) {
 
     if (empty($_FILES['excel1']['tmp_name'])) {
@@ -53,8 +59,8 @@ if (!empty($_FILES)) {
             return true;
         });
         $data1 = array_map(function ($v) use ($k1) {
-//            $v[chr(ord('A') + count($v))] = $v[$k1];
-//            $v[$k1] = toString($v[$k1]);
+            //            $v[chr(ord('A') + count($v))] = $v[$k1];
+            //            $v[$k1] = toString($v[$k1]);
             return $v;
         }, $data1);
         $data[$index] = [
@@ -73,49 +79,43 @@ if (!empty($_FILES)) {
             continue;
         }
 
-        $value[6] = 'null';
+        $value[6] = '';
         foreach ($data as $index => $datum) {
             if ($index == 0) {
                 continue;
             }
+
             switch ($index) {
                 case '1':
-                    if($value[6] == 'null') {
-                        $real = array_column($datum['value'], '0');
-                        if (in_array($value['1'], $real)) {
 
-                            if ($value['3'] != '城西移动') {
-                                $value['6'] = '城西移动';
-                            } else {
-                                $value['6'] = '';
-                            }
-                        } else {
-                            if ($value['3'] == '城西移动') {
-                                $value['6'] = '未知供应商';
-                            } else {
-                                $value['6'] = '';
-                            }
+                    $real = array_map('strval', array_column($datum['value'], '0'));
+                    if ($value['3'] == '城西移动') {
+                        if (!in_array($value['1'], $real)) {
+                            $value['6'] = '未知供应商';
+                        }
+                    }else{
+                        if (in_array($value['1'], $real)) {
+                            $value['6'] = '城西移动';
                         }
                     }
                     break;
                 case '2':
-//                    if(isset($value['6'])) {
-//                        continue;
+                    //                    if(isset($value['6'])) {
+                    //                        continue;
+                    //                    }
+
+                    $real = array_map('strval', array_column($datum['value'], '3'));
+//                    if($value[1]=='14893820241') {
+//                        var_dump($value);
+//                        var_dump(in_array($value['1'], $real));
 //                    }
-                    if($value[6] == 'null') {
-                        $real = array_column($datum['value'], '3');
+                    if ($value['3'] == '外协移动') {
+                        if (!in_array($value['1'], $real)) {
+                            $value['6'] = '未知供应商';
+                        }
+                    }else{
                         if (in_array($value['1'], $real)) {
-                            if ($value['3'] != '外协移动') {
-                                $value['6'] = '外协移动';
-                            } else {
-                                $value['6'] = '';
-                            }
-                        } else {
-                            if ($value['3'] == '外协移动') {
-                                $value['6'] = '未知供应商';
-                            } else {
-                                $value['6'] = '';
-                            }
+                            $value['6'] = '外协移动';
                         }
                     }
                     break;
@@ -148,9 +148,9 @@ if (!empty($_FILES)) {
             $start = 'A';
             foreach ($result[$i] as $i1 => $value) {
                 $ch->setCellValue($start . ($i + 1), $value);
-                if($index == 0) {
-                    if($i1 > 5) {
-                        if($value != '') {
+                if ($index == 0) {
+                    if ($i1 > 5) {
+                        if ($value != '') {
                             $ch->getStyle($start . ($i + 1))->getFont()->getColor()->setRGB('FF0000');
                         }
                     }
@@ -159,7 +159,7 @@ if (!empty($_FILES)) {
             }
         }
     }
-//    $sh->createSheet();
+    //    $sh->createSheet();
     //    $sh->setActiveSheetIndex(0);
     //    $ch = $sh->getActiveSheet();
     //    //    $ch->setCellValue('A1', $title);
@@ -243,6 +243,7 @@ if (!empty($_FILES)) {
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: no-cache");
     $writer->save("php://output");
+    //$writer->save("s1.xlsx");
 } else {
     echo '无效处理，即将自动跳转';
     echo '<script>
